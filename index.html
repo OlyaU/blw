@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Прикорм — руководство и трекер</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f3f5ef;
+  --surface:#e8eee3;
+  --card:#ffffff;
+  --sage:#6b8f68;
+  --sage-d:#4a5e48;
+  --sage-l:#dde8da;
+  --lav:#9b8dc0;
+  --lav-d:#5a4a8a;
+  --lav-l:#ede9f5;
+  --lav-ll:#f5f3fc;
+  --amber:#b07a30;
+  --amber-l:#fdf3e3;
+  --rust:#a03a2a;
+  --rust-l:#fdf0ec;
+  --ink:#2a2e26;
+  --ink2:#4a5448;
+  --ink3:#7a8470;
+  --border:#c5d4c2;
+  --border2:#b0c4ac;
+  --r:10px;
+  --rl:16px;
+  --fd:'Playfair Display',Georgia,serif;
+  --fb:'DM Sans',system-ui,sans-serif;
+}
+body{font-family:var(--fb);font-size:16px;color:var(--ink);background:var(--bg);line-height:1.6;min-height:100vh}
+.wrap{max-width:940px;margin:0 auto;padding:0 16px 48px}
+.hero{padding:36px 0 28px}
+.hero-eye{font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--sage);margin-bottom:6px}
+.hero-title{font-family:var(--fd);font-size:clamp(26px,5vw,44px);font-weight:700;color:var(--ink);line-height:1.1;max-width:580px}
+.hero-title em{font-style:italic;color:var(--lav)}
+.hero-sub{font-size:14px;color:var(--ink3);margin-top:10px;max-width:460px;line-height:1.65}
+.hero-rule{display:flex;gap:6px;margin-top:18px;align-items:center}
+.hero-rule span{height:3px;border-radius:2px}
+.tabs{display:flex;border-bottom:1.5px solid var(--border2);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tb{padding:10px 14px;border:none;background:none;cursor:pointer;font-family:var(--fb);font-size:14px;color:var(--ink3);border-bottom:2px solid transparent;white-space:nowrap;transition:color .18s;margin-bottom:-1.5px}
+.tb.on{color:var(--sage-d);border-bottom-color:var(--sage);font-weight:500}
+.tb:hover:not(.on){color:var(--ink)}
+.pane{display:none;padding:26px 0}
+.pane.on{display:block;animation:up .22s ease}
+@keyframes up{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.sec{font-family:var(--fd);font-size:20px;font-weight:700;color:var(--ink);margin:28px 0 12px;display:flex;align-items:center;gap:9px}
+.sec:first-child{margin-top:0}
+.sec-pip{width:8px;height:8px;border-radius:50%;background:var(--lav);flex-shrink:0}
+.ib{border-left:3px solid var(--sage);background:var(--sage-l);border-radius:0 var(--r) var(--r) 0;padding:11px 15px;margin:10px 0;font-size:14px;line-height:1.7;color:var(--ink)}
+.ib.lav{border-left-color:var(--lav);background:var(--lav-l)}
+.ib.amber{border-left-color:var(--amber);background:var(--amber-l)}
+.ib.rust{border-left-color:var(--rust);background:var(--rust-l)}
+.tbl{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0}
+.tbl th{text-align:left;font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);padding:7px 10px;border-bottom:1.5px solid var(--border2)}
+.tbl td{padding:7px 10px;border-bottom:.5px solid var(--border);vertical-align:top;line-height:1.55}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--surface)}
+.dn{font-family:var(--fd);font-style:italic;font-size:15px;color:var(--lav-d)}
+.tag{display:inline-block;background:var(--sage-l);color:var(--sage-d);font-size:11px;padding:2px 7px;border-radius:20px;white-space:nowrap;font-weight:500}
+.tag.lav{background:var(--lav-l);color:var(--lav-d)}
+.tag.amber{background:var(--amber-l);color:#7a4e10}
+.dbadge{background:var(--rust-l);color:var(--rust);font-size:11px;padding:2px 6px;border-radius:4px;font-weight:500}
+.gbadge{background:var(--sage-l);color:var(--sage-d);font-size:11px;padding:2px 6px;border-radius:4px;font-weight:500}
+.apc{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0}
+@media(max-width:600px){.apc{grid-template-columns:1fr}}
+.apcard{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:18px;position:relative;overflow:hidden}
+.apcard::after{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.apcard.sage::after{background:var(--sage)}
+.apcard.lav::after{background:var(--lav)}
+.ap-eye{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;margin-bottom:7px}
+.apcard.sage .ap-eye{color:var(--sage)}
+.apcard.lav .ap-eye{color:var(--lav)}
+.apcard h3{font-family:var(--fd);font-size:16px;font-weight:700;color:var(--ink);margin-bottom:13px}
+.pcr{display:flex;gap:8px;align-items:flex-start;font-size:14px;margin-bottom:6px;line-height:1.55}
+.pl{color:var(--sage);font-size:14px;line-height:1.5;flex-shrink:0}
+.mi{color:var(--lav);font-size:14px;line-height:1.5;flex-shrink:0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+@media(max-width:480px){.stats{grid-template-columns:1fr 1fr}}
+.sc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px 12px;text-align:center}
+.sv{font-family:var(--fd);font-size:26px;font-weight:700;line-height:1;font-style:italic}
+.sl{font-size:11px;color:var(--ink3);margin-top:6px;line-height:1.45}
+.tol{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:20px;margin:14px 0;display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center}
+@media(max-width:520px){.tol{grid-template-columns:1fr}}
+.tol-n{font-family:var(--fd);font-size:56px;font-style:italic;color:var(--lav);line-height:1;white-space:nowrap}
+.tol-n span{font-size:18px;color:var(--ink3);display:block;margin-top:-4px}
+.tol-t{font-size:14px;color:var(--ink2);line-height:1.7}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+@media(max-width:500px){.cgrid{grid-template-columns:1fr}}
+.ccard{border:1px solid var(--border);border-radius:var(--r);padding:11px 13px;background:var(--card)}
+.ccard .cn{font-size:13px;font-weight:500;margin-bottom:3px}
+.ccard .cf{font-size:13px;color:var(--ink3);line-height:1.55}
+.div{height:1px;background:var(--border);margin:26px 0}
+.setup{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:18px;margin-bottom:16px}
+.setup-t{font-family:var(--fd);font-size:17px;font-weight:700;color:var(--ink);margin-bottom:13px}
+.arow{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.arow label{font-size:12px;font-weight:500;color:var(--ink2);display:flex;flex-direction:column;gap:5px}
+.arow select,.arow input[type=date]{height:38px;border:1px solid var(--border2);border-radius:var(--r);padding:0 12px;font-size:13px;background:var(--bg);color:var(--ink);font-family:var(--fb);outline:none;transition:border-color .15s}
+.arow select:focus,.arow input[type=date]:focus{border-color:var(--lav)}
+.arow select{min-width:168px}
+.arow input[type=date]{width:156px}
+.btn-add{height:38px;padding:0 22px;background:var(--sage);color:#fff;border:none;border-radius:var(--r);cursor:pointer;font-family:var(--fb);font-size:13px;font-weight:500;transition:background .15s}
+.btn-add:hover{background:var(--sage-d)}
+.save-n{font-size:11px;color:var(--ink3);margin-top:10px;display:flex;align-items:center;gap:6px}
+.save-dot{width:6px;height:6px;border-radius:50%;background:var(--lav);flex-shrink:0}
+.awin{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:14px;margin-bottom:14px}
+.awt{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:4px}
+.awsub{font-size:12px;color:var(--ink3);margin-bottom:11px;line-height:1.55}
+.agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:7px}
+.aitem{display:flex;justify-content:space-between;align-items:center;padding:8px 11px;border:1px solid var(--border);border-radius:var(--r);background:var(--card);font-size:12px}
+.aitem.intro{border-color:var(--lav);background:var(--lav-ll)}
+.astat{font-size:11px;color:var(--ink3)}
+.aitem.intro .astat{color:var(--lav-d);font-weight:500}
+.filt{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:13px}
+.fc{padding:5px 13px;border:1px solid var(--border2);border-radius:20px;font-size:12px;cursor:pointer;background:var(--card);color:var(--ink2);font-family:var(--fb);transition:all .15s}
+.fc.on{background:var(--sage);color:#fff;border-color:var(--sage)}
+.fc:hover:not(.on){border-color:var(--sage);color:var(--sage-d)}
+.tcards{display:flex;flex-direction:column;gap:13px}
+.tcard{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:15px}
+.tcard.al{border-left:3px solid var(--lav)}
+.th2{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:8px;flex-wrap:wrap}
+.tname{font-family:var(--fd);font-size:16px;font-weight:700;color:var(--ink)}
+.tpill{font-size:10px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;border-radius:10px;background:var(--surface);color:var(--ink3);margin-left:7px;vertical-align:middle}
+.tmeta{font-size:11.5px;color:var(--ink3)}
+.delbtn{background:none;border:none;cursor:pointer;color:var(--ink3);font-size:18px;padding:0 4px;line-height:1;transition:color .15s;flex-shrink:0}
+.delbtn:hover{color:var(--rust)}
+.dtbl{width:100%;border-collapse:collapse;font-size:12px}
+.dtbl th{text-align:left;font-size:11px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3);padding:5px 8px;border-bottom:1px solid var(--border)}
+.dtbl td{padding:6px 8px;border-bottom:.5px solid var(--border)}
+.dtbl tr:last-child td{border-bottom:none}
+.dtbl tr.td td{background:var(--lav-ll)}
+.dtbl tr.td .dl{color:var(--lav-d);font-weight:500}
+.dtbl tr.past td{opacity:.42}
+.chk{background:none;border:1.5px solid var(--border2);border-radius:5px;width:23px;height:23px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:12px;transition:all .15s;font-family:var(--fb)}
+.chk.done{background:var(--sage);border-color:var(--sage);color:#fff}
+.chk:hover:not(.done){border-color:var(--sage);background:var(--sage-l)}
+.empty{text-align:center;padding:32px;color:var(--ink3);font-size:13px;font-style:italic;font-family:var(--fd)}
+.anote{font-size:11px;color:var(--lav-d);background:var(--lav-l);border-radius:4px;padding:1px 6px;display:inline-block;margin-left:6px;font-weight:500}
+@media(max-width:480px){
+  .tbl{font-size:13px}
+  .tbl th,.tbl td{padding:5px 6px}
+  .dtbl th,.dtbl td{padding:4px 5px}
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -16px;padding:0 16px}
+  .hero-title{font-size:clamp(24px,7vw,40px)}
+  .setup-t{font-size:15px}
+  .arow{flex-direction:column;align-items:stretch}
+  .arow select,.arow input[type=date],.btn-add{width:100%;min-width:unset}
+  .btn-add{text-align:center}
+  .th2{flex-direction:column;gap:4px}
+  .tmeta{font-size:11px}
+  .tname{font-size:15px}
+  .dtbl{font-size:11.5px}
+  .fc{padding:5px 10px;font-size:12px}
+  .cgrid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .agrid{grid-template-columns:1fr 1fr}
+  .aitem{font-size:11.5px;padding:6px 9px}
+  .wrap{padding:0 12px 32px}
+}
+
+.day-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+@media(max-width:600px){.day-grid{grid-template-columns:1fr}}
+.meal-card{border-radius:var(--rl);padding:16px;border:1px solid var(--border)}
+.meal-card.morning{background:#fdf3e3;border-color:#e8d0a0}
+.meal-card.noon{background:var(--sage-l);border-color:var(--border2)}
+.meal-card.evening{background:var(--lav-ll);border-color:#c8bfe0}
+.meal-time{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:5px}
+.meal-card.morning .meal-time{color:var(--amber)}
+.meal-card.noon .meal-time{color:var(--sage-d)}
+.meal-card.evening .meal-time{color:var(--lav-d)}
+.meal-title{font-family:var(--fd);font-size:15px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.meal-body{font-size:13px;color:var(--ink2);line-height:1.6}
+.week-cards{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+.wcard{display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:14px}
+.wnum{font-family:var(--fd);font-size:28px;font-style:italic;color:var(--lav);line-height:1;padding-top:2px}
+.wtitle{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:6px}
+.wbody{font-size:13px;color:var(--ink2);line-height:1.7}
+.wnode,.wbody span{display:block;margin-top:6px;font-size:12px;color:var(--ink3);font-style:italic}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <div class="hero-eye">Руководство по прикорму · 6–12 месяцев</div>
+  <h1 class="hero-title">Первая еда —<br><em>без тревоги</em></h1>
+  <p class="hero-sub">Два подхода, таблицы введения, окно толерантности к аллергенам и трекер с расчётом доз по дням.</p>
+  <div class="hero-rule">
+    <span style="width:32px;background:var(--sage)"></span>
+    <span style="width:14px;background:var(--lav)"></span>
+    <span style="width:6px;background:var(--lav-l)"></span>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tb on" onclick="showTab('approaches',this)">Подходы</button>
+  <button class="tb" onclick="showTab('classic',this)">Классический</button>
+  <button class="tb" onclick="showTab('blw',this)">Самоприкорм</button>
+  <button class="tb" onclick="showTab('mixed',this)">Смешанный</button>
+  <button class="tb" onclick="showTab('safety',this)">Безопасность</button>
+  <button class="tb" onclick="showTab('tracker',this)">Трекер</button>
+</div>
+
+<!-- APPROACHES -->
+<div id="pane-approaches" class="pane on">
+  <div class="sec"><span class="sec-pip"></span>Два подхода — один выбор</div>
+  <div class="apc">
+    <div class="apcard sage">
+      <div class="ap-eye">Классический прикорм</div>
+      <h3>Пюре → текстуры → кусочки</h3>
+      <div class="pcr"><span class="pl">+</span><span>Легко контролировать объём и состав</span></div>
+      <div class="pcr"><span class="pl">+</span><span>Удобно вводить аллергены маленькими пробами</span></div>
+      <div class="pcr"><span class="pl">+</span><span>Меньше беспорядка и стресса</span></div>
+      <div class="pcr"><span class="pl">+</span><span>Легче отследить реакцию на продукт</span></div>
+      <div class="pcr"><span class="mi">–</span><span>Риск задержаться на пюре слишком долго</span></div>
+      <div class="pcr"><span class="mi">–</span><span>Ребёнок пассивен — взрослый управляет</span></div>
+      <div class="pcr"><span class="mi">–</span><span>Нужно готовить отдельную «детскую» еду</span></div>
+    </div>
+    <div class="apcard lav">
+      <div class="ap-eye">Самоприкорм</div>
+      <h3>С первого дня — настоящая еда</h3>
+      <div class="pcr"><span class="pl">+</span><span>Развивает моторику, жевание, самостоятельность</span></div>
+      <div class="pcr"><span class="pl">+</span><span>Быстрее переход к разным текстурам</span></div>
+      <div class="pcr"><span class="pl">+</span><span>Ребёнок участвует в семейной еде с первых дней</span></div>
+      <div class="pcr"><span class="pl">+</span><span>Лучше саморегуляция аппетита долгосрочно</span></div>
+      <div class="pcr"><span class="mi">–</span><span>Сложнее оценить, сколько реально съедено</span></div>
+      <div class="pcr"><span class="mi">–</span><span>Много беспорядка — нужна готовность</span></div>
+      <div class="pcr"><span class="mi">–</span><span>Нужно осознанно планировать железо и аллергены</span></div>
+      <div class="pcr"><span class="mi">–</span><span>Рвотный рефлекс пугает — важно отличать от удушья</span></div>
+    </div>
+  </div>
+  <div class="ib">Современный практичный формат для большинства семей — <strong>комбинированный</strong>: утром каша ложкой, днём овощи/мясо ложкой или размятые, вечером 1–2 мягких кусочки руками для тренировки навыка.</div>
+
+  <div class="div"></div>
+  <div class="sec"><span class="sec-pip"></span>Окно толерантности к аллергенам</div>
+  <div class="tol">
+    <div><div class="tol-n">6<span>месяцев</span></div></div>
+    <div class="tol-t">Иммунная система ребёнка в 4–12 месяцев формирует толерантность к белкам, с которыми встречается впервые. <strong>Раннее знакомство с аллергенами снижает риск аллергии в будущем</strong> — это рекомендация современной педиатрии, а не просто «попробуйте».</div>
+  </div>
+  <div class="stats">
+    <div class="sc"><div class="sv" style="color:var(--lav)">–80%</div><div class="sl">снижение риска аллергии на арахис при раннем введении (LEAP study, 2015)</div></div>
+    <div class="sc"><div class="sv" style="color:var(--sage)">1×/нед</div><div class="sl">минимум после успешного введения — для сохранения толерантности</div></div>
+    <div class="sc"><div class="sv" style="color:var(--amber)">7</div><div class="sl">ключевых аллергенов ввести до 12 месяцев: яйцо, арахис, молочное, пшеница, кунжут, рыба, соя</div></div>
+  </div>
+  <div class="ib lav"><strong>Ключевые принципы:</strong><br>
+    · Не откладывать аллергены «до года» — устаревший подход<br>
+    · Начинать с 6 месяцев, в первый месяц прикорма<br>
+    · После хорошей переносимости — в рационе минимум 1 раз в неделю<br>
+    · Давать утром или днём, когда ребёнок под наблюдением 2+ часа<br>
+    · Не вводить аллерген, если ребёнок болен или есть сыпь
+  </div>
+  <div class="ib amber">При тяжёлой экземе и/или известной аллергии на яйцо — вопрос введения арахиса согласовать с педиатром или аллергологом заранее.</div>
+
+  <div class="div"></div>
+  <div class="sec"><span class="sec-pip"></span>Сравнение подходов</div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Критерий</th><th>Классический</th><th>Самоприкорм</th></tr></thead>
+  <tbody>
+    <tr><td>Стартовая текстура</td><td>Пюре, затем гуще</td><td>Сразу мягкие кусочки руками</td></tr>
+    <tr><td>Контроль объёма</td><td>Проще в граммах и ложках</td><td>Сложнее, особенно в начале</td></tr>
+    <tr><td>Освоение текстур</td><td>Может идти медленно при пюре</td><td>Обычно быстрее</td></tr>
+    <tr><td>Введение железа</td><td>Удобно через каши и мясное пюре</td><td>Нужно осознанно планировать</td></tr>
+    <tr><td>Аллергены</td><td>Легко дозировать маленькими пробами</td><td>Возможно, важна безопасная форма</td></tr>
+    <tr><td>Беспорядок</td><td>Меньше</td><td>Значительно больше</td></tr>
+    <tr><td>Комбинировать?</td><td colspan="2" style="text-align:center;color:var(--sage-d);font-weight:500">Да — и это оптимально для большинства семей</td></tr>
+  </tbody></table></div>
+</div>
+
+<!-- CLASSIC -->
+<div id="pane-classic" class="pane">
+  <div class="ib">Шаблон для здорового доношенного ребёнка ~6 месяцев. Грудное молоко или смесь остаются <strong>основным питанием</strong> до 12 месяцев.</div>
+  <div class="sec"><span class="sec-pip"></span>Первые 14 дней — пошагово</div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>День</th><th>Продукт</th><th>Форма</th><th>Объём</th><th>Задача</th></tr></thead>
+  <tbody id="ctbody"></tbody></table></div>
+  <div class="sec"><span class="sec-pip"></span>Первый месяц по неделям</div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Неделя</th><th>Приёмов/день</th><th>Что вводим</th><th>Объём</th><th>Комментарий</th></tr></thead>
+  <tbody>
+    <tr><td class="dn">1</td><td>1</td><td>2–3 овоща</td><td><span class="tag">1 ч.л. → 30–60 г</span></td><td>Кабачок, брокколи, цветная капуста, тыква</td></tr>
+    <tr><td class="dn">2</td><td>1–2</td><td>Каша + мясо + овощи</td><td><span class="tag">Каша 30–60 г, мясо 5–10 г</span></td><td>Приоритет железу</td></tr>
+    <tr><td class="dn">3</td><td>2</td><td>Новые овощи, каша, мясо, фрукт, 1–2 аллергена</td><td><span class="tag">Мясо 10–20 г</span></td><td>Яйцо, арахис, йогурт, пшеницу, рыбу — по одному</td></tr>
+    <tr><td class="dn">4</td><td>2–3</td><td>Повторение аллергенов, новые продукты</td><td><span class="tag">Овощи 60–100 г</span></td><td>Кунжут, соя если не введены</td></tr>
+  </tbody></table></div>
+  <div class="sec"><span class="sec-pip"></span>Как вводить аллергены</div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Аллерген</th><th>Безопасная форма</th><th>Первая проба</th><th>После введения</th></tr></thead>
+  <tbody>
+    <tr><td>Яйцо</td><td>Сварено вкрутую, размять</td><td><span class="tag lav">1/4–1/3 яйца</span></td><td>Давать регулярно</td></tr>
+    <tr><td>Арахис</td><td>Гладкая паста, разведённая до соуса</td><td><span class="tag lav">1/4–1/2 ч.л.</span></td><td>Не давать комком</td></tr>
+    <tr><td>Молочное</td><td>Натуральный йогурт без сахара</td><td><span class="tag lav">1–2 ч.л.</span></td><td>Повторять регулярно</td></tr>
+    <tr><td>Пшеница</td><td>Хорошо разваренная каша</td><td><span class="tag lav">Маленькая проба</span></td><td>Повторять</td></tr>
+    <tr><td>Кунжут</td><td>Тахини, сильно разведённый</td><td><span class="tag lav">1/4 ч.л.</span></td><td>Повторять</td></tr>
+    <tr><td>Рыба</td><td>Очень мягкая, без костей, размятая</td><td><span class="tag lav">1–2 ч.л.</span></td><td>Повторять</td></tr>
+  </tbody></table></div>
+  <div class="ib amber" style="margin-top:14px">При тяжёлой экземе или известной реакции на яйцо — вопрос арахиса согласовать с педиатром до введения.</div>
+</div>
+
+<!-- BLW -->
+<div id="pane-blw" class="pane">
+  <div class="ib lav">В самоприкорме ребёнок с самого начала получает мягкие кусочки и ест сам. Смешанный формат тоже нормален — часть ложкой, часть самостоятельно.</div>
+  <div class="sec"><span class="sec-pip"></span>Первые 14 дней</div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>День</th><th>Продукт</th><th>Форма нарезки</th><th>Предложить</th><th>Цель</th></tr></thead>
+  <tbody id="btbody"></tbody></table></div>
+  <div class="sec"><span class="sec-pip"></span>Безопасные формы для старта</div>
+  <div class="cgrid" id="cutgrid"></div>
+  <div class="ib amber" style="margin-top:4px">Ключ: кусок размером с палец взрослого (~7–8 см). Сам продукт раздавливается двумя пальцами взрослого без усилий — это и есть нужная мягкость.</div>
+  <div class="sec"><span class="sec-pip"></span>Первый месяц по неделям</div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Неделя</th><th>Приёмов/день</th><th>Что предлагать</th><th>Формат тарелки</th><th>Цель</th></tr></thead>
+  <tbody>
+    <tr><td class="dn">1</td><td>1</td><td>Мягкие овощи, 1–2 фрукта</td><td>2 продукта, по 1–2 кусочка</td><td>Захват, сенсорика, ритуал</td></tr>
+    <tr><td class="dn">2</td><td>1–2</td><td>Овощи + каша на ложке + мясо</td><td>кусочки руками + каша на ложке + белок</td><td>Начать железо и ложку</td></tr>
+    <tr><td class="dn">3</td><td>2</td><td>Яйцо, йогурт, арахис, рыба, пшеница</td><td>2–3 элемента на тарелке</td><td>Аллергены в безопасной форме</td></tr>
+    <tr><td class="dn">4</td><td>2–3</td><td>Адаптированная семейная еда</td><td>Овощ + белок + углевод</td><td>Есть с семьёй</td></tr>
+  </tbody></table></div>
+</div>
+
+
+<!-- MIXED -->
+<div id="pane-mixed" class="pane">
+  <div class="ib">Смешанный формат — самый распространённый на практике. Днём еда с ложки даёт понятный контроль объёма и удобно вводит новые продукты. Вечером мягкий кусочек в руках — это уже про навык, самостоятельность и интерес к еде, а не про питание.</div>
+
+  <div class="sec"><span class="sec-pip"></span>Идея распорядка дня</div>
+  <div class="day-grid">
+    <div class="meal-card morning">
+      <div class="meal-time">Утро</div>
+      <div class="meal-title">Каша с ложки</div>
+      <div class="meal-body">Овсяная или гречневая каша — взрослый кормит. Можно дать ребёнку свою ложку, пусть пробует параллельно. Объём по аппетиту: от 2–3 ч.л. в начале до 80–100 г к концу первого месяца.</div>
+    </div>
+    <div class="meal-card noon">
+      <div class="meal-time">День</div>
+      <div class="meal-title">Овощи + мясо с ложки</div>
+      <div class="meal-body">Пюре или размятые овощи, мясо в составе или рядом. Основной приём — взрослый кормит. Ближе к 8–9 месяцам можно рядом положить кусочек отварного овоща — пусть берёт сам.</div>
+    </div>
+    <div class="meal-card evening">
+      <div class="meal-time">Вечер</div>
+      <div class="meal-title">Мягкий кусочек в руках</div>
+      <div class="meal-body">1–2 мягких кусочка: палочка кабачка, соцветие брокколи, долька авокадо. Цель не съесть — а потрогать, поднести ко рту, жевать. Объём не считаем.</div>
+    </div>
+  </div>
+
+  <div class="sec"><span class="sec-pip"></span>Первые 4 недели — как это выглядит</div>
+  <div class="week-cards">
+    <div class="wcard">
+      <div class="wnum">1</div>
+      <div class="wcontent">
+        <div class="wtitle">Неделя 1 — знакомство</div>
+        <div class="wbody">
+          <strong>Утро:</strong> овсяная каша, 2–3 ч.л., с ложки<br>
+          <strong>Вечер:</strong> 1 кусочек кабачка или брокколи — просто дать, без ожиданий<br>
+          <span class="wnote">Молоко остаётся главным. Прикорм — дополнение.</span>
+        </div>
+      </div>
+    </div>
+    <div class="wcard">
+      <div class="wnum">2</div>
+      <div class="wcontent">
+        <div class="wtitle">Неделя 2 — добавляем обед</div>
+        <div class="wbody">
+          <strong>Утро:</strong> каша с ложки, 30–50 г<br>
+          <strong>День:</strong> овощное пюре с ложки, 40–60 г<br>
+          <strong>Вечер:</strong> кусочек батата или авокадо<br>
+          <span class="wnode">Вводим мясо в обедное пюре: 5–10 г индейки или говядины</span>
+        </div>
+      </div>
+    </div>
+    <div class="wcard">
+      <div class="wnum">3</div>
+      <div class="wcontent">
+        <div class="wtitle">Неделя 3 — первые аллергены</div>
+        <div class="wbody">
+          <strong>Утро:</strong> каша, 50–70 г. В середине недели — добавить 1/4 яйца в кашу<br>
+          <strong>День:</strong> овощи + мясо, 60–80 г<br>
+          <strong>Вечер:</strong> кусочек + попробовать йогурт на ложке<br>
+          <span class="wnode">Аллерген вводим утром или днём — наблюдаем 2 часа</span>
+        </div>
+      </div>
+    </div>
+    <div class="wcard">
+      <div class="wnum">4</div>
+      <div class="wcontent">
+        <div class="wtitle">Неделя 4 — расширяем</div>
+        <div class="wbody">
+          <strong>Утро:</strong> каша + аллерген в составе (яйцо, арахисовая паста тонко)<br>
+          <strong>День:</strong> овощи + мясо + фрукт после<br>
+          <strong>Вечер:</strong> 1–2 кусочка на выбор: овощ, фрукт, омлет полоской<br>
+          <span class="wnode">Вводим пшеницу (хлеб размоченный), кунжут, рыбу — по одному</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec"><span class="sec-pip"></span>Важные принципы смешанного подхода</div>
+  <div class="ib lav">
+    <strong>Кормление с ложки</strong> — взрослый управляет ложкой, но не насилует. Отворачивается, закрывает рот — всё, стоп. Не нужно «ещё ложечку за маму».<br><br>
+    <strong>Кусочек вечером</strong> — это игра и тренировка, не еда. Не расстраивайтесь, если всё упало на пол. Это нормально ещё недели три.
+  </div>
+  <div class="ib">
+    <strong>Когда переходить к большему самоприкорму:</strong> когда ребёнок уверенно сидит, хорошо захватывает, сам тянется к тарелке и явно хочет брать сам — постепенно сдвигайте обед тоже в сторону кусочков и размятой еды руками.
+  </div>
+  <div class="ib amber">
+    <strong>Железо</strong> — в смешанном формате легко упустить. Следите: мясо в обеденном пюре с первой недели, каша обогащённая (если есть), яйцо к 3-й неделе.
+  </div>
+
+  <div class="sec"><span class="sec-pip"></span>Что давать кусочком вечером — по неделям</div>
+  <div class="cgrid">
+    <div class="ccard"><div class="cn">Недели 1–2</div><div class="cf">Кабачок отварной палочкой, брокколи соцветием, батат брусочком, авокадо долькой</div></div>
+    <div class="ccard"><div class="cn">Недели 3–4</div><div class="cf">+ мягкая груша или банан, омлет полоской, хлопья рыбы без костей</div></div>
+    <div class="ccard"><div class="cn">Месяц 2</div><div class="cf">+ мягкие кусочки отварного мяса, фрикаделька, тофу полоской</div></div>
+    <div class="ccard"><div class="cn">Месяц 3+</div><div class="cf">Адаптированная версия семейного ужина — то же, что едят все, но мягче и без соли</div></div>
+  </div>
+</div>
+
+<!-- SAFETY -->
+<div id="pane-safety" class="pane">
+  <div class="sec" style="margin-top:0"><span class="sec-pip"></span>Правила нарезки при самоприкорме</div>
+  <div class="ib lav">Правило пальца: кусок ~7–8 см в длину, ~1.5–2 см в ширину. Ребёнок зажимает в кулаке, часть торчит сверху. Сам продукт раздавливается двумя пальцами взрослого без усилий.</div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Продукт</th><th>Правильная форма</th><th>Почему именно так</th></tr></thead>
+  <tbody>
+    <tr><td>Кабачок, батат, тыква</td><td>Длинные палочки-«пальцы»</td><td>Можно зажать в кулаке, мягкая часть сверху</td></tr>
+    <tr><td>Брокколи, цветная капуста</td><td>Крупные соцветия с «ручкой»</td><td>«Ручка» для захвата, соцветие для жевания</td></tr>
+    <tr><td>Авокадо</td><td>Толстые дольки</td><td>Мягкий, не скользит при правильном размере</td></tr>
+    <tr><td>Банан</td><td>Половинка или длинная полоска</td><td>Скользкий — нужен хороший захват</td></tr>
+    <tr><td>Груша, яблоко</td><td>Только запечённые или очень мягкие дольки</td><td>Сырые — твёрдые, отламываются опасными кусками</td></tr>
+    <tr><td>Мясо</td><td>Очень мягкие волокна или нежная фрикаделька</td><td>Легко распадается, не требует зубов</td></tr>
+    <tr><td>Рыба</td><td>Мягкие хлопья без костей</td><td>Кости — механическая опасность</td></tr>
+    <tr><td>Каша, йогурт</td><td>Ложка с кашей — ребёнок держит сам</td><td>Ребёнок сам подносит ложку ко рту</td></tr>
+    <tr><td>Яйцо</td><td>Омлет полосками или варёное кусочками</td><td>Мягко, не крошится опасными комками</td></tr>
+    <tr><td>Арахисовая паста</td><td>Разведённая до жидкого соуса</td><td>Густая прилипает к нёбу — риск удушья</td></tr>
+  </tbody></table></div>
+  <div class="sec"><span class="sec-pip"></span>Рвотный рефлекс vs удушье</div>
+  <div class="apc" style="margin-top:0">
+    <div class="apcard sage" style="border-radius:var(--r)">
+      <div class="ap-eye">Рвотный рефлекс — норма</div>
+      <h3 style="font-size:15px;margin-bottom:9px">Рвотный рефлекс</h3>
+      <p style="font-size:13px;color:var(--ink2);line-height:1.65">Ребёнок <strong>краснеет</strong>, кашляет, выталкивает еду. Защитный рефлекс, у младенцев срабатывает дальше вперёд. <strong>Не вмешивайтесь</strong> — ребёнок справляется сам.</p>
+    </div>
+    <div class="apcard" style="border-radius:var(--r);border-top:3px solid var(--rust)">
+      <div class="ap-eye" style="color:var(--rust)">Удушье — экстренно</div>
+      <h3 style="font-size:15px;margin-bottom:9px">Требует действий</h3>
+      <p style="font-size:13px;color:var(--ink2);line-height:1.65">Ребёнок <strong>не может дышать</strong>, не издаёт звуков или издаёт тихий свист, синеет. Немедленные действия по первой помощи и вызов скорой.</p>
+    </div>
+  </div>
+  <div class="sec"><span class="sec-pip"></span>Опасные продукты и замены</div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Продукт</th><th>Риск</th><th>Безопасная альтернатива</th></tr></thead>
+  <tbody>
+    <tr><td>Целый виноград</td><td><span class="dbadge">не давать до 4+ лет</span></td><td>Не давать в 6 мес</td></tr>
+    <tr><td>Целые орехи</td><td><span class="dbadge">опасно</span> Твёрдые, мелкие</td><td>Только паста, разведённая до соуса</td></tr>
+    <tr><td>Сырая морковь</td><td><span class="dbadge">опасно</span> Твёрдая</td><td>Сварить до мягкости: легко давится двумя пальцами</td></tr>
+    <tr><td>Сырое яблоко кусками</td><td><span class="dbadge">опасно</span></td><td>Запечённое, очень мягкое</td></tr>
+    <tr><td>Густая арахисовая паста</td><td><span class="dbadge">опасно</span> Прилипает</td><td>Развести до жидкого соуса</td></tr>
+    <tr><td>Попкорн</td><td><span class="dbadge">не давать</span></td><td>Не давать</td></tr>
+    <tr><td>Сосиски кружочками</td><td><span class="dbadge">опасно</span></td><td>Не давать грудничку</td></tr>
+    <tr><td>Мягкие варёные овощи палочками</td><td><span class="gbadge">безопасно</span></td><td>Идеальный старт</td></tr>
+    <tr><td>Авокадо дольками</td><td><span class="gbadge">безопасно</span></td><td>Мягкий, питательный</td></tr>
+  </tbody></table></div>
+  <div class="sec"><span class="sec-pip"></span>Запрещённые до 12 месяцев</div>
+  <div class="cgrid">
+    <div class="ccard"><div class="cn" style="color:var(--rust)">Мёд</div><div class="cf">Риск ботулизм новорождённых — даже в составе выпечки и блюд</div></div>
+    <div class="ccard"><div class="cn" style="color:var(--rust)">Коровье молоко как напиток</div><div class="cf">Не подходит по составу, риск перегрузки почек</div></div>
+    <div class="ccard"><div class="cn" style="color:var(--rust)">Соки и сладкие напитки</div><div class="cf">Лишний сахар, формируют вкус к сладкому</div></div>
+    <div class="ccard"><div class="cn" style="color:var(--rust)">Соль, колбасы, полуфабрикаты</div><div class="cf">Слишком много соли для незрелых почек</div></div>
+  </div>
+  <div class="sec"><span class="sec-pip"></span>Признаки аллергической реакции</div>
+  <div class="ib rust">После нового продукта наблюдайте 2 часа. Тревожные признаки: крапивница или сыпь, отёк губ/лица/языка, повторная рвота, шумное дыхание, кашель, бледность, вялость. При тяжёлых симптомах — скорая немедленно.</div>
+</div>
+
+<!-- TRACKER -->
+<div id="pane-tracker" class="pane">
+  <div class="setup">
+    <div class="setup-t">Добавить продукт</div>
+    <div class="arow">
+      <label>Продукт
+        <select id="psel">
+          <option value="">— выбрать —</option>
+          <optgroup label="Овощи">
+            <option value="Кабачок" data-t="veg">Кабачок</option>
+            <option value="Брокколи" data-t="veg">Брокколи</option>
+            <option value="Цветная капуста" data-t="veg">Цветная капуста</option>
+            <option value="Тыква" data-t="veg">Тыква</option>
+            <option value="Батат" data-t="veg">Батат</option>
+            <option value="Морковь" data-t="veg">Морковь</option>
+          </optgroup>
+          <optgroup label="Каши">
+            <option value="Овсяная каша" data-t="grain">Овсяная каша</option>
+            <option value="Гречневая каша" data-t="grain">Гречневая каша</option>
+            <option value="Рисовая каша" data-t="grain">Рисовая каша</option>
+          </optgroup>
+          <optgroup label="Мясо / рыба">
+            <option value="Индейка" data-t="protein">Индейка</option>
+            <option value="Говядина" data-t="protein">Говядина</option>
+            <option value="Курица" data-t="protein">Курица</option>
+            <option value="Лосось" data-t="al">Лосось</option>
+            <option value="Белая рыба" data-t="al">Белая рыба</option>
+          </optgroup>
+          <optgroup label="Фрукты">
+            <option value="Груша" data-t="fruit">Груша</option>
+            <option value="Яблоко" data-t="fruit">Яблоко</option>
+            <option value="Слива" data-t="fruit">Слива</option>
+            <option value="Персик" data-t="fruit">Персик</option>
+            <option value="Банан" data-t="fruit">Банан</option>
+          </optgroup>
+          <optgroup label="Аллергены">
+            <option value="Яйцо" data-t="al">Яйцо</option>
+            <option value="Арахис" data-t="al">Арахис</option>
+            <option value="Йогурт (молочное)" data-t="al">Йогурт (молочное)</option>
+            <option value="Пшеница" data-t="al">Пшеница</option>
+            <option value="Кунжут" data-t="al">Кунжут</option>
+            <option value="Тофу (соя)" data-t="al">Тофу (соя)</option>
+          </optgroup>
+        </select>
+      </label>
+      <label>Дата начала
+        <input type="date" id="dstart">
+      </label>
+      <button class="btn-add" onclick="addProd()">Добавить</button>
+    </div>
+    <div class="save-n"><span class="save-dot"></span>Галочки и список сохраняются автоматически в вашем браузере</div>
+  </div>
+
+  <div id="awin" class="awin" style="display:none">
+    <div class="awt">Аллергены — статус введения</div>
+    <div class="awsub">Все 7 ключевых аллергенов желательно ввести до 12 месяцев. После успешного введения — минимум 1 раз в неделю.</div>
+    <div class="agrid" id="agrid"></div>
+  </div>
+
+  <div class="filt">
+    <button class="fc on" onclick="setFilter('all',this)">Все</button>
+    <button class="fc" onclick="setFilter('veg',this)">Овощи</button>
+    <button class="fc" onclick="setFilter('grain',this)">Каши</button>
+    <button class="fc" onclick="setFilter('protein',this)">Мясо</button>
+    <button class="fc" onclick="setFilter('fruit',this)">Фрукты</button>
+    <button class="fc" onclick="setFilter('al',this)">Аллергены</button>
+  </div>
+
+  <div class="tcards" id="tcards">
+    <div class="empty">Добавьте первый продукт — и начнём</div>
+  </div>
+</div>
+
+</div>
+<script>
+const CD=[
+  {d:1,p:"Кабачок",f:"Гладкое пюре",v:"1–2 ч.л.",t:"Старт. После молока или в середине бодрствования"},
+  {d:2,p:"Кабачок",f:"Гладкое пюре",v:"3–4 ч.л.",t:"Если переносимость хорошая"},
+  {d:3,p:"Кабачок",f:"Пюре чуть гуще",v:"20–30 г",t:"Не добиваться «полной порции»"},
+  {d:4,p:"Кабачок",f:"Пюре",v:"30–50 г",t:"Закрепить 1 овощ"},
+  {d:5,p:"Брокколи",f:"Новое пюре",v:"1–2 ч.л. + кабачок",t:"Новый вкус"},
+  {d:6,p:"Брокколи",f:"Пюре",v:"20–30 г",t:"Можно только брокколи или микс"},
+  {d:7,p:"Цветная капуста",f:"Пюре",v:"20–30 г",t:"Третий овощ"},
+  {d:8,p:"Безмолочная каша (овсяная/гречн.)",f:"Очень жидкая с молоком/водой",v:"2–3 ч.л.",t:"Первый злак — источник железа"},
+  {d:9,p:"Каша",f:"Более густая",v:"30–50 г",t:"Каша утром или овощи днём"},
+  {d:10,p:"Индейка / говядина",f:"Гомогенное пюре + овощ",v:"1–2 ч.л. мяса + овощ",t:"Раннее железо и белок"},
+  {d:11,p:"Мясо + овощ",f:"Пюре",v:"5–10 г мяса + 40–60 г овоща",t:"Не форсировать объём мяса"},
+  {d:12,p:"Груша / яблоко",f:"Пюре без сахара",v:"1–2 ч.л.",t:"Первый фрукт"},
+  {d:13,p:"Яйцо",f:"Сварено вкрутую, размять",v:"1/4–1/3 яйца",t:"Первый аллерген — давать днём"},
+  {d:14,p:"Арахис / йогурт",f:"Паста до соуса / натур. йогурт",v:"1/4–1/2 ч.л.",t:"Второй аллерген — утром/днём"},
+];
+const BD=[
+  {d:1,p:"Авокадо",f:"Дольки размером с палец",v:"1–2 дольки",t:"Захват, поднести ко рту"},
+  {d:2,p:"Кабачок",f:"Длинные мягкие палочки",v:"2–3 палочки",t:"Сенсорное знакомство"},
+  {d:3,p:"Брокколи",f:"Крупные соцветия с «ручкой»",v:"1–2 соцветия",t:"Держать и откусывать"},
+  {d:4,p:"Батат",f:"Запечённые толстые брусочки",v:"2 брусочка",t:"Навык жевания дёснами"},
+  {d:5,p:"Груша / банан",f:"Мягкие дольки / половинка",v:"1–2 кусочка",t:"Новый вкус, скользкость"},
+  {d:6,p:"Овсяная каша",f:"Густая каша на ложке — ребёнок держит сам",v:"1–2 ложки",t:"Осваивать ложку руками"},
+  {d:7,p:"Цветная капуста",f:"Крупные мягкие соцветия",v:"1–2 штуки",t:"Расширить овощи"},
+  {d:8,p:"Индейка / говядина",f:"Мягкие волокна или фрикаделька",v:"1–2 полоски",t:"Раннее железо"},
+  {d:9,p:"Натуральный йогурт",f:"Ложка с едой — ребёнок держит сам",v:"1–2 ложки",t:"Молочный аллерген"},
+  {d:10,p:"Яйцо",f:"Омлет полосками",v:"1–2 полоски",t:"Аллерген и белок"},
+  {d:11,p:"Арахис",f:"Разведённая паста на ложке",v:"1 маленькая ложка",t:"Аллерген"},
+  {d:12,p:"Лосось / белая рыба",f:"Мягкие хлопья без костей",v:"1–2 хлопья",t:"Рыбный аллерген"},
+  {d:13,p:"Тофу / хумус",f:"Мягкие полоски / на ложке",v:"1–2 кусочка",t:"Белок, соя, текстуры"},
+  {d:14,p:"Адаптированная семейная тарелка",f:"Овощ + белок + каша",v:"По 1–2 кусочка",t:"Переход к семейной еде"},
+];
+const CUT=[
+  {n:"Авокадо",f:"Толстые дольки ~7 см"},
+  {n:"Кабачок, батат, тыква",f:"Мягкие палочки ~7 см × 1.5 см"},
+  {n:"Брокколи, цветная капуста",f:"Крупные мягкие соцветия с «ручкой»"},
+  {n:"Банан",f:"Половинка или длинная толстая полоска"},
+  {n:"Груша, яблоко",f:"Только запечённые / очень мягкие дольки"},
+  {n:"Мясо",f:"Очень мягкие волокна или нежная фрикаделька"},
+  {n:"Рыба",f:"Мягкие хлопья без костей — проверить тщательно"},
+  {n:"Каша, йогурт",f:"Ложка с кашей — ребёнок держит сам"},
+  {n:"Яйцо",f:"Омлет полосками / размятое варёное"},
+  {n:"Арахисовая паста",f:"Разведённая до жидкого соуса — не комком!"},
+];
+const ALL7=["Яйцо","Арахис","Молочное (йогурт)","Пшеница","Кунжут","Рыба","Соя"];
+const KP='prikorma_products',KC='prikorma_checks';
+let prods=[],chks={},filt='all';
+function save(){try{localStorage.setItem(KP,JSON.stringify(prods));localStorage.setItem(KC,JSON.stringify(chks));}catch(e){}}
+function load(){try{const p=localStorage.getItem(KP),c=localStorage.getItem(KC);if(p)prods=JSON.parse(p);if(c)chks=JSON.parse(c);}catch(e){}}
+function today(){return new Date().toISOString().split('T')[0]}
+function fmt(s){if(!s)return'';const[y,m,d]=s.split('-');return d+'.'+m+'.'+y}
+function dayN(start){const s=new Date(start),t=new Date();s.setHours(0,0,0,0);t.setHours(0,0,0,0);return Math.floor((t-s)/86400000)+1}
+function d4day(start,n){const d=new Date(start);d.setDate(d.getDate()+(n-1));return d.toISOString().split('T')[0]}
+function dose(n,type){
+  if(type==='al'){if(n===1)return{d:'1/4–1/2 ч.л.',c:''};if(n<=3)return{d:'1/2–1 ч.л.',c:''};if(n<=7)return{d:'1–2 ч.л.',c:''};return{d:'повтор 1×/нед',c:'amber'};}
+  if(type==='protein'){if(n===1)return{d:'1–2 ч.л.',c:''};if(n<=3)return{d:'5–10 г',c:''};if(n<=7)return{d:'10–20 г',c:''};return{d:'20–30 г',c:''};}
+  if(type==='grain'){if(n===1)return{d:'2–3 ч.л.',c:''};if(n<=3)return{d:'30–50 г',c:''};if(n<=7)return{d:'50–80 г',c:''};return{d:'60–100 г',c:''};}
+  if(type==='fruit'){if(n===1)return{d:'1–2 ч.л.',c:''};if(n<=3)return{d:'10–20 г',c:''};if(n<=7)return{d:'20–40 г',c:''};return{d:'30–50 г',c:''};}
+  if(n===1)return{d:'1–2 ч.л.',c:''};if(n===2)return{d:'3–4 ч.л.',c:''};if(n===3)return{d:'20–30 г',c:''};if(n<=5)return{d:'30–50 г',c:''};if(n<=7)return{d:'40–70 г',c:''};return{d:'60–100 г',c:''};
+}
+function showTab(id,el){document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));document.getElementById('pane-'+id).classList.add('on');el.classList.add('on');}
+function renderTables(){
+  document.getElementById('ctbody').innerHTML=CD.map(r=>`<tr><td class="dn">${r.d}</td><td>${r.p}</td><td style="color:var(--ink3);font-size:12px">${r.f}</td><td><span class="tag">${r.v}</span></td><td style="color:var(--ink3);font-size:12px">${r.t}</td></tr>`).join('');
+  document.getElementById('btbody').innerHTML=BD.map(r=>`<tr><td class="dn">${r.d}</td><td>${r.p}</td><td style="color:var(--ink3);font-size:12px">${r.f}</td><td><span class="tag">${r.v}</span></td><td style="color:var(--ink3);font-size:12px">${r.t}</td></tr>`).join('');
+  document.getElementById('cutgrid').innerHTML=CUT.map(c=>`<div class="ccard"><div class="cn">${c.n}</div><div class="cf">${c.f}</div></div>`).join('');
+}
+function addProd(){
+  const sel=document.getElementById('psel');const opt=sel.options[sel.selectedIndex];
+  const name=opt.value,type=opt.dataset.t||'veg';const ds=document.getElementById('dstart').value;
+  if(!name||!ds){alert('Выберите продукт и дату начала');return}
+  if(prods.find(p=>p.name===name)){alert('Этот продукт уже добавлен');return}
+  prods.push({name,type,start:ds});save();render();sel.value='';
+}
+function delProd(name){
+  if(!confirm(`Удалить «${name}» из трекера?`))return;
+  prods=prods.filter(p=>p.name!==name);
+  Object.keys(chks).forEach(k=>{if(k.startsWith(name+'_d'))delete chks[k]});
+  save();render();
+}
+function toggle(key){
+  chks[key]=!chks[key];
+  const btn=document.querySelector(`[data-k="${key}"]`);
+  if(btn){btn.classList.toggle('done',chks[key]);btn.textContent=chks[key]?'✓':'';}
+  save();
+}
+function setFilter(f,el){filt=f;document.querySelectorAll('.fc').forEach(c=>c.classList.remove('on'));el.classList.add('on');render();}
+function render(){
+  renderAllergens();
+  const cont=document.getElementById('tcards');
+  const list=filt==='all'?prods:prods.filter(p=>p.type===filt);
+  if(!list.length){cont.innerHTML=`<div class="empty">${prods.length?'Нет продуктов в этой категории':'Добавьте первый продукт — и начнём'}</div>`;return;}
+  const td=today();
+  const tl={veg:'Овощ',grain:'Каша',protein:'Мясо',fruit:'Фрукт',al:'Аллерген'};
+  cont.innerHTML=list.map(pr=>{
+    const cur=dayN(pr.start);const showN=Math.min(Math.max(7,cur+3),21);
+    const alNote=pr.type==='al'?'<span class="anote">1×/нед после введения</span>':'';
+    const rows=Array.from({length:showN},(_,i)=>{
+      const dn=i+1,ds=d4day(pr.start,dn);const isT=ds===td,isPast=ds<td;
+      const key=pr.name+'_d'+dn,done=!!chks[key];const{d,c}=dose(dn,pr.type);
+      return `<tr class="${isT?'td':isPast&&!done?'past':''}"><td class="dl">${isT?'● ':''}День ${dn}</td><td style="color:var(--ink3)">${fmt(ds)}</td><td><span class="tag ${c}">${d}</span></td><td style="text-align:center"><button class="chk${done?' done':''}" data-k="${key}" onclick="toggle('${key}')">${done?'✓':''}</button></td></tr>`;
+    }).join('');
+    return `<div class="tcard${pr.type==='al'?' al':''}"><div class="th2"><div style="flex:1;min-width:0"><span class="tname">${pr.name}</span><span class="tpill">${tl[pr.type]||''}</span>${alNote}</div><div style="display:flex;align-items:center;gap:8px;flex-shrink:0"><span class="tmeta">с ${fmt(pr.start)}${cur>0?' · день '+cur:''}</span><button class="delbtn" onclick="delProd('${pr.name.replace(/'/g,"\\'")}')">×</button></div></div><table class="dtbl"><thead><tr><th>День</th><th>Дата</th><th>Доза</th><th>Дали ✓</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }).join('');
+}
+function renderAllergens(){
+  const awin=document.getElementById('awin');if(!prods.length){awin.style.display='none';return;}
+  awin.style.display='block';
+  const intro=prods.filter(p=>p.type==='al').map(p=>p.name.toLowerCase());
+  const match=a=>intro.some(n=>n.includes(a.split(' ')[0].toLowerCase())||a.toLowerCase().includes(n.split(' ')[0].toLowerCase()));
+  document.getElementById('agrid').innerHTML=ALL7.map(a=>{const ok=match(a);return`<div class="aitem${ok?' intro':''}"><span>${a}</span><span class="astat">${ok?'✓ введён':'не введён'}</span></div>`;}).join('');
+}
+load();
+document.getElementById('dstart').value=today();
+renderTables();render();
+</script>
+</body>
+</html>

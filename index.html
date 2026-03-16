@@ -182,6 +182,18 @@ body{font-family:var(--fb);font-size:16px;color:var(--ink);background:var(--bg);
 .wtitle{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:6px}
 .wbody{font-size:13px;color:var(--ink2);line-height:1.7}
 .wnode,.wbody span{display:block;margin-top:6px;font-size:12px;color:var(--ink3);font-style:italic}
+
+/* bottom nav */
+.bottom-nav{display:flex;gap:2px;border-top:1.5px solid var(--border2);margin-top:32px;padding-top:4px;overflow-x:auto;scrollbar-width:none}
+.bottom-nav::-webkit-scrollbar{display:none}
+.bnb{flex:1;min-width:60px;padding:10px 6px 8px;border:none;background:none;cursor:pointer;font-family:var(--fb);font-size:12px;color:var(--ink3);text-align:center;line-height:1.3;transition:color .15s;border-top:2px solid transparent}
+.bnb.on{color:var(--sage-d);border-top-color:var(--sage);font-weight:500}
+.bnb:hover:not(.on){color:var(--ink)}
+.bnb-icon{font-size:16px;display:block;margin-bottom:3px}
+/* scroll-to-top */
+.totop{position:fixed;bottom:24px;right:18px;width:42px;height:42px;border-radius:50%;background:var(--sage);color:#fff;border:none;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;transform:translateY(8px);box-shadow:0 2px 10px rgba(0,0,0,.18);z-index:100}
+.totop.vis{opacity:1;pointer-events:auto;transform:translateY(0)}
+.totop:active{transform:scale(.92)}
 </style>
 </head>
 <body>
@@ -269,6 +281,16 @@ body{font-family:var(--fb);font-size:16px;color:var(--ink);background:var(--bg);
     <tr><td>Беспорядок</td><td>Меньше</td><td>Значительно больше</td></tr>
     <tr><td>Комбинировать?</td><td colspan="2" style="text-align:center;color:var(--sage-d);font-weight:500">Да — и это оптимально для большинства семей</td></tr>
   </tbody></table></div>
+
+  <nav class="bottom-nav" aria-label="Навигация">
+    <button class="bnb" onclick="showTab('approaches',this)" data-tab="approaches"><span class="bnb-icon">◎</span>Подходы</button>
+    <button class="bnb" onclick="showTab('classic',this)" data-tab="classic"><span class="bnb-icon">◉</span>Классический</button>
+    <button class="bnb" onclick="showTab('blw',this)" data-tab="blw"><span class="bnb-icon">✦</span>Самоприкорм</button>
+    <button class="bnb" onclick="showTab('mixed',this)" data-tab="mixed"><span class="bnb-icon">◈</span>Смешанный</button>
+    <button class="bnb" onclick="showTab('safety',this)" data-tab="safety"><span class="bnb-icon">◇</span>Безопасность</button>
+    <button class="bnb" onclick="showTab('tracker',this)" data-tab="tracker"><span class="bnb-icon">◻</span>Трекер</button>
+  </nav>
+
 </div>
 
 <!-- CLASSIC -->
@@ -296,6 +318,16 @@ body{font-family:var(--fb);font-size:16px;color:var(--ink);background:var(--bg);
     <tr><td>Рыба</td><td>Очень мягкая, без костей, размятая</td><td><span class="tag lav">1–2 ч.л.</span></td><td>Повторять</td></tr>
   </tbody></table></div>
   <div class="ib amber" style="margin-top:14px">При тяжёлой экземе или известной реакции на яйцо — вопрос арахиса согласовать с педиатром до введения.</div>
+
+  <nav class="bottom-nav" aria-label="Навигация">
+    <button class="bnb" onclick="showTab('approaches',this)" data-tab="approaches"><span class="bnb-icon">◎</span>Подходы</button>
+    <button class="bnb" onclick="showTab('classic',this)" data-tab="classic"><span class="bnb-icon">◉</span>Классический</button>
+    <button class="bnb" onclick="showTab('blw',this)" data-tab="blw"><span class="bnb-icon">✦</span>Самоприкорм</button>
+    <button class="bnb" onclick="showTab('mixed',this)" data-tab="mixed"><span class="bnb-icon">◈</span>Смешанный</button>
+    <button class="bnb" onclick="showTab('safety',this)" data-tab="safety"><span class="bnb-icon">◇</span>Безопасность</button>
+    <button class="bnb" onclick="showTab('tracker',this)" data-tab="tracker"><span class="bnb-icon">◻</span>Трекер</button>
+  </nav>
+
 </div>
 
 <!-- BLW -->
@@ -411,6 +443,16 @@ body{font-family:var(--fb);font-size:16px;color:var(--ink);background:var(--bg);
     <div class="ccard"><div class="cn">Месяц 2</div><div class="cf">+ мягкие кусочки отварного мяса, фрикаделька, тофу полоской</div></div>
     <div class="ccard"><div class="cn">Месяц 3+</div><div class="cf">Адаптированная версия семейного ужина — то же, что едят все, но мягче и без соли</div></div>
   </div>
+
+  <nav class="bottom-nav" aria-label="Навигация">
+    <button class="bnb" onclick="showTab('approaches',this)" data-tab="approaches"><span class="bnb-icon">◎</span>Подходы</button>
+    <button class="bnb" onclick="showTab('classic',this)" data-tab="classic"><span class="bnb-icon">◉</span>Классический</button>
+    <button class="bnb" onclick="showTab('blw',this)" data-tab="blw"><span class="bnb-icon">✦</span>Самоприкорм</button>
+    <button class="bnb" onclick="showTab('mixed',this)" data-tab="mixed"><span class="bnb-icon">◈</span>Смешанный</button>
+    <button class="bnb" onclick="showTab('safety',this)" data-tab="safety"><span class="bnb-icon">◇</span>Безопасность</button>
+    <button class="bnb" onclick="showTab('tracker',this)" data-tab="tracker"><span class="bnb-icon">◻</span>Трекер</button>
+  </nav>
+
 </div>
 
 <!-- SAFETY -->
@@ -465,6 +507,16 @@ body{font-family:var(--fb);font-size:16px;color:var(--ink);background:var(--bg);
   </div>
   <div class="sec"><span class="sec-pip"></span>Признаки аллергической реакции</div>
   <div class="ib rust">После нового продукта наблюдайте 2 часа. Тревожные признаки: крапивница или сыпь, отёк губ/лица/языка, повторная рвота, шумное дыхание, кашель, бледность, вялость. При тяжёлых симптомах — скорая немедленно.</div>
+
+  <nav class="bottom-nav" aria-label="Навигация">
+    <button class="bnb" onclick="showTab('approaches',this)" data-tab="approaches"><span class="bnb-icon">◎</span>Подходы</button>
+    <button class="bnb" onclick="showTab('classic',this)" data-tab="classic"><span class="bnb-icon">◉</span>Классический</button>
+    <button class="bnb" onclick="showTab('blw',this)" data-tab="blw"><span class="bnb-icon">✦</span>Самоприкорм</button>
+    <button class="bnb" onclick="showTab('mixed',this)" data-tab="mixed"><span class="bnb-icon">◈</span>Смешанный</button>
+    <button class="bnb" onclick="showTab('safety',this)" data-tab="safety"><span class="bnb-icon">◇</span>Безопасность</button>
+    <button class="bnb" onclick="showTab('tracker',this)" data-tab="tracker"><span class="bnb-icon">◻</span>Трекер</button>
+  </nav>
+
 </div>
 
 <!-- TRACKER -->
@@ -538,6 +590,16 @@ body{font-family:var(--fb);font-size:16px;color:var(--ink);background:var(--bg);
   <div class="tcards" id="tcards">
     <div class="empty">Добавьте первый продукт — и начнём</div>
   </div>
+
+  <nav class="bottom-nav" aria-label="Навигация">
+    <button class="bnb" onclick="showTab('approaches',this)" data-tab="approaches"><span class="bnb-icon">◎</span>Подходы</button>
+    <button class="bnb" onclick="showTab('classic',this)" data-tab="classic"><span class="bnb-icon">◉</span>Классический</button>
+    <button class="bnb" onclick="showTab('blw',this)" data-tab="blw"><span class="bnb-icon">✦</span>Самоприкорм</button>
+    <button class="bnb" onclick="showTab('mixed',this)" data-tab="mixed"><span class="bnb-icon">◈</span>Смешанный</button>
+    <button class="bnb" onclick="showTab('safety',this)" data-tab="safety"><span class="bnb-icon">◇</span>Безопасность</button>
+    <button class="bnb" onclick="showTab('tracker',this)" data-tab="tracker"><span class="bnb-icon">◻</span>Трекер</button>
+  </nav>
+
 </div>
 
 </div>
@@ -602,7 +664,15 @@ function dose(n,type){
   if(type==='fruit'){if(n===1)return{d:'1–2 ч.л.',c:''};if(n<=3)return{d:'10–20 г',c:''};if(n<=7)return{d:'20–40 г',c:''};return{d:'30–50 г',c:''};}
   if(n===1)return{d:'1–2 ч.л.',c:''};if(n===2)return{d:'3–4 ч.л.',c:''};if(n===3)return{d:'20–30 г',c:''};if(n<=5)return{d:'30–50 г',c:''};if(n<=7)return{d:'40–70 г',c:''};return{d:'60–100 г',c:''};
 }
-function showTab(id,el){document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));document.getElementById('pane-'+id).classList.add('on');el.classList.add('on');}
+function showTab(id,el){
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.bnb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pane-'+id).classList.add('on');
+  el.classList.add('on');
+  document.querySelectorAll('[data-tab="'+id+'"]').forEach(b=>b.classList.add('on'));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 function renderTables(){
   document.getElementById('ctbody').innerHTML=CD.map(r=>`<tr><td class="dn">${r.d}</td><td>${r.p}</td><td style="color:var(--ink3);font-size:12px">${r.f}</td><td><span class="tag">${r.v}</span></td><td style="color:var(--ink3);font-size:12px">${r.t}</td></tr>`).join('');
   document.getElementById('btbody').innerHTML=BD.map(r=>`<tr><td class="dn">${r.d}</td><td>${r.p}</td><td style="color:var(--ink3);font-size:12px">${r.f}</td><td><span class="tag">${r.v}</span></td><td style="color:var(--ink3);font-size:12px">${r.t}</td></tr>`).join('');
@@ -653,9 +723,17 @@ function renderAllergens(){
   const match=a=>intro.some(n=>n.includes(a.split(' ')[0].toLowerCase())||a.toLowerCase().includes(n.split(' ')[0].toLowerCase()));
   document.getElementById('agrid').innerHTML=ALL7.map(a=>{const ok=match(a);return`<div class="aitem${ok?' intro':''}"><span>${a}</span><span class="astat">${ok?'✓ введён':'не введён'}</span></div>`;}).join('');
 }
+
+window.addEventListener('scroll',function(){
+  var btn=document.getElementById('totop');
+  if(window.scrollY>240){btn.classList.add('vis');}else{btn.classList.remove('vis');}
+});
 load();
 document.getElementById('dstart').value=today();
+document.querySelectorAll('[data-tab="approaches"]').forEach(b=>b.classList.add('on'));
 renderTables();render();
 </script>
+
+<button class="totop" id="totop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Наверх">↑</button>
 </body>
 </html>
